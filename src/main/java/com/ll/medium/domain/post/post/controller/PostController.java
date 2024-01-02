@@ -82,12 +82,13 @@ public class PostController {
 		@NotBlank
 		private String body;
 		private boolean isPublished;
+		private boolean isPaid;
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/write")
 	public String write(@Valid WriteForm form) {
-		Post post = postService.write(rq.getMember(), form.getTitle(), form.getBody(), form.isPublished());
+		Post post = postService.write(rq.getMember(), form.getTitle(), form.getBody(), form.isPublished(), form.isPaid());
 
 		return rq.redirect("/post/" + post.getId(), post.getId() + "번 글이 작성되었습니다.");
 	}
@@ -112,6 +113,7 @@ public class PostController {
 		@NotBlank
 		private String body;
 		private boolean isPublished;
+		private boolean isPaid;
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -121,7 +123,7 @@ public class PostController {
 
 		if (!postService.canModify(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
 
-		postService.modify(post, form.getTitle(), form.getBody(), form.isPublished());
+		postService.modify(post, form.getTitle(), form.getBody(), form.isPublished(), form.isPaid());
 
 		return rq.redirect(
 				"/post/" + post.getId(),
