@@ -42,4 +42,9 @@ public class Member {
 
 		return authorities;
 	}
+
+	public boolean isAdmin() {
+		return getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+	}
 }

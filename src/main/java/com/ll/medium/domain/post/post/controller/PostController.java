@@ -128,4 +128,19 @@ public class PostController {
 				post.getId() + "번 글이 수정되었습니다."
 		);
 	}
+
+	@PreAuthorize("isAuthenticated()")
+	@DeleteMapping("/{id}/delete")
+	public String delete(@PathVariable long id) {
+		Post post = postService.findById(id).orElseThrow(() -> new GlobalException("404-1", "해당 글이 존재하지 않습니다."));
+
+		if (!postService.canDelete(rq.getMember(), post)) throw new GlobalException("403-1", "권한이 없습니다.");
+
+		postService.delete(post);
+
+		return rq.redirect(
+				"/post/list",
+				post.getId() + "번 글이 삭제되었습니다."
+		);
+	}
 }
