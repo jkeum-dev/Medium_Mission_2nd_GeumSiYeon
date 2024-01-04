@@ -46,13 +46,28 @@ public class PostService {
 	}
 
 	public boolean canModify(Member actor, Post post) {
+		if (actor == null) return false;
+
 		return actor.equals(post.getAuthor());
 	}
 
 	public boolean canDelete(Member actor, Post post) {
+		if (actor == null) return false;
 		if (actor.isAdmin()) return true;
 
 		return actor.equals(post.getAuthor());
+	}
+
+	public boolean canLike(Member actor, Post post) {
+		if (actor == null) return false;
+
+		return !post.hasLike(actor);
+	}
+
+	public boolean canCancelLike(Member actor, Post post) {
+		if (actor == null) return false;
+
+		return post.hasLike(actor);
 	}
 
 	@Transactional
@@ -70,5 +85,15 @@ public class PostService {
 	@Transactional
 	public void increaseHit(Post post) {
 		post.increaseHit();
+	}
+
+	@Transactional
+	public void like(Member actor, Post post) {
+		post.addLike(actor);
+	}
+
+	@Transactional
+	public void cancelLike(Member actor, Post post) {
+		post.deleteLike(actor);
 	}
 }
