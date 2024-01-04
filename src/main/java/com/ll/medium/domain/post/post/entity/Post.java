@@ -1,12 +1,10 @@
 package com.ll.medium.domain.post.post.entity;
 
 import com.ll.medium.domain.member.member.entity.Member;
+import com.ll.medium.domain.post.postComment.entity.PostComment;
 import com.ll.medium.domain.post.postLike.entity.PostLike;
 import com.ll.medium.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -25,6 +23,7 @@ public class Post extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Member author;
 	private String title;
+	@Column(columnDefinition = "TEXT")
 	private String body;
 	private boolean isPublished;
 	@Setter(PROTECTED)
@@ -32,6 +31,10 @@ public class Post extends BaseEntity {
 	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<PostLike> likes = new ArrayList<>();
+	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+	@Builder.Default
+	@OrderBy("id DESC")
+	private List<PostComment> comments = new ArrayList<>();
 
 	public void increaseHit() {
 		hit++;
@@ -56,5 +59,17 @@ public class Post extends BaseEntity {
 
 	public void deleteLike(Member member) {
 		likes.removeIf(postLike -> postLike.getMember().equals(member));
+	}
+
+	public PostComment writeComment(Member actor, String body) {
+		PostComment postComment = PostComment.builder()
+				.post(this)
+				.author(actor)
+				.body(body)
+				.build();
+
+		comments.add(postComment);
+
+		return postComment;
 	}
 }
