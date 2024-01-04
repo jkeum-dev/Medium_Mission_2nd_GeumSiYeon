@@ -1,14 +1,12 @@
 package com.ll.medium.domain.member.member.entity;
 
-import jakarta.persistence.*;
+import com.ll.medium.global.jpa.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,18 +17,11 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
-public class Member {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@CreatedDate
-	private LocalDateTime createDate;
-	@LastModifiedDate
-	private LocalDateTime modifyDate;
+public class Member extends BaseEntity {
 	private String username;
 	private String password;
 
+	@Transient
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
