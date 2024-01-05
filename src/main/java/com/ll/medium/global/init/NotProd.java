@@ -43,7 +43,6 @@ public class NotProd {
 		Member memberUser1 = memberService.join("user1", "1234").getData();
 		Member memberUser2 = memberService.join("user2", "1234").getData();
 		Member memberUser3 = memberService.join("user3", "1234").getData();
-		Member memberUser4 = memberService.join("user4", "1234").getData();
 
 		Post post1 = postService.write(memberUser1, "제목 1", "내용 1", true);
 		Post post2 = postService.write(memberUser1, "제목 2", "내용 2", true);
@@ -53,10 +52,6 @@ public class NotProd {
 		Post post5 = postService.write(memberUser2, "제목 5", "내용 5", true);
 		Post post6 = postService.write(memberUser2, "제목 6", "내용 6", false);
 
-		IntStream.rangeClosed(7, 50).forEach(i -> {
-			postService.write(memberUser3, "제목 " + i, "내용 " + i, true);
-		});
-
 		postService.like(memberUser2, post1);
 		postService.like(memberUser3, post1);
 		postService.like(memberUser4, post1);
@@ -65,5 +60,12 @@ public class NotProd {
 		postService.like(memberUser3, post2);
 
 		postService.like(memberUser2, post3);
+
+    IntStream.rangeClosed(51, 150).forEach(i -> {
+      postService.write(
+          memberService.join("user" + i, "1234", true).getData(),
+          "제목 " + i, "내용 " + i, true, true
+      );
+    });
 	}
 }

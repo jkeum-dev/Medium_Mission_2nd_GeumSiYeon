@@ -20,6 +20,7 @@ import java.util.List;
 public class Member extends BaseEntity {
 	private String username;
 	private String password;
+	private boolean isPaid;
 
 	@Transient
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -29,6 +30,10 @@ public class Member extends BaseEntity {
 
 		if (List.of("system", "admin").contains(username)) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+
+		if (isPaid) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_PAID"));
 		}
 
 		return authorities;

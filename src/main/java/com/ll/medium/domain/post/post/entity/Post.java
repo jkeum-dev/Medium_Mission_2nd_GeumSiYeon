@@ -26,7 +26,8 @@ public class Post extends BaseEntity {
 	@Column(columnDefinition = "TEXT")
 	private String body;
 	private boolean isPublished;
-	@Setter(PROTECTED)
+	private boolean isPaid;
+  @Setter(PROTECTED)
 	private long hit;
 	@OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
 	@Builder.Default

@@ -21,12 +21,13 @@ public class PostService {
 	private final PostCommentRepository postCommentRepository;
 
 	@Transactional
-	public Post write(Member author, String title, String body, boolean isPublished) {
+	public Post write(Member author, String title, String body, boolean isPublished, boolean isPaid) {
 		Post post = Post.builder()
 				.author(author)
 				.title(title)
 				.body(body)
 				.isPublished(isPublished)
+				.isPaid(isPaid)
 				.build();
 
 		return postRepository.save(post);
@@ -91,10 +92,11 @@ public class PostService {
 	}
 
 	@Transactional
-	public void modify(Post post, String title, String body, boolean published) {
+	public void modify(Post post, String title, String body, boolean published, boolean paid) {
 		post.setTitle(title);
 		post.setBody(body);
 		post.setPublished(published);
+		post.setPaid(paid);
 	}
 
 	@Transactional
