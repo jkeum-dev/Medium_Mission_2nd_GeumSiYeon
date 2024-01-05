@@ -19,11 +19,6 @@
     <div th:text="${#numbers.formatInteger(post.likes.size, 3, 'COMMA')}"></div>
   </div>
 
-  <div>
-    <h3>공개여부</h3>
-    <div th:text="${post.published ? '공개' : '비공개'}"></div>
-  </div>
-
   <!-- 유료 멤버십 전용 게시글이고, 현재 사용자가 유료 멤버가 아닐 경우 -->
   <div th:if="${post.paid and !@rq.member.isPaid}">
     <p>이 글은 유료멤버십전용 입니다.</p>
