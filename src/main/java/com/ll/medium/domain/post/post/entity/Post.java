@@ -32,4 +32,5 @@ public class Post {
 	private String title;
 	private String body;
 	private boolean isPublished;
+	private boolean isPaid;
 }

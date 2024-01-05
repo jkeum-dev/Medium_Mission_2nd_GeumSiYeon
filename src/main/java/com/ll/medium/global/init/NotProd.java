@@ -27,21 +27,27 @@ public class NotProd {
 		return args -> {
 			if (memberService.findByUsername("user1").isPresent()) return;
 
-			Member memberUser1 = memberService.join("user1", "1234").getData();
-			Member memberUser2 = memberService.join("user2", "1234").getData();
-			Member memberUser3 = memberService.join("user3", "1234").getData();
-			Member memberUser4 = memberService.join("user4", "1234").getData();
+			Member memberUser1 = memberService.join("user1", "1234", true).getData();
+			Member memberUser2 = memberService.join("user2", "1234", true).getData();
+			Member memberUser3 = memberService.join("user3", "1234", false).getData();
 
-			postService.write(memberUser1, "제목 1", "내용 1", true);
-			postService.write(memberUser1, "제목 2", "내용 2", true);
-			postService.write(memberUser1, "제목 3", "내용 3", false);
-			postService.write(memberUser1, "제목 4", "내용 4", true);
+			postService.write(memberUser1, "제목 1", "내용 1", true, true);
+			postService.write(memberUser1, "제목 2", "내용 2", true, false);
+			postService.write(memberUser1, "제목 3", "내용 3", false, false);
+			postService.write(memberUser1, "제목 4", "내용 4", true, true);
 
-			postService.write(memberUser2, "제목 5", "내용 5", true);
-			postService.write(memberUser2, "제목 6", "내용 6", false);
+			postService.write(memberUser2, "제목 5", "내용 5", true, true);
+			postService.write(memberUser2, "제목 6", "내용 6", false, false);
 
 			IntStream.rangeClosed(7, 50).forEach(i -> {
-				postService.write(memberUser3, "제목 " + i, "내용 " + i, true);
+				postService.write(memberUser3, "제목 " + i, "내용 " + i, true, false);
+			});
+
+			IntStream.rangeClosed(51, 150).forEach(i -> {
+				postService.write(
+						memberService.join("user" + i, "1234", true).getData(),
+						"제목 " + i, "내용 " + i, true, true
+				);
 			});
 		};
 	}
